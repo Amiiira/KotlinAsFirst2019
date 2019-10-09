@@ -50,10 +50,11 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
 fun daysInMonth(month: Int, year: Int): Int {
-    return if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) 31 else {
-        return if (month == 4 || month == 6 || month == 9 || month == 11) 30 else {
-            return if ((year % 400 == 0) || (year % 100 != 0) && (year % 4 == 0)) 29 else 28
-        }
+    return when {
+        month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12 -> 31
+        month == 4 || month == 6 || month == 9 || month == 11 -> 30
+        ((year % 400 == 0) || (year % 100 != 0)) && (year % 4 == 0) -> 29
+        else -> 28
     }
 }
 
@@ -68,8 +69,10 @@ fun circleInside(
     x1: Double, y1: Double, r1: Double,
     x2: Double, y2: Double, r2: Double
 ): Boolean {
-    val d = sqrt(sqr(x2 - x1) + sqr(y2 - y1))
-    return d <= r2 - r1
+    return when {
+        sqrt(sqr(x2 - x1) + sqr(y2 - y1)) <= r2 - r1 -> true
+        else -> false
+    }
 }
 
 /**
@@ -83,7 +86,9 @@ fun circleInside(
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
     return when {
-        ((a <= r) && (b <= s)) || ((a <= r) && (c <= s)) || ((b <= r) && (a <= s) || ((b <= r) && (c <= s)) || ((c <= r) && (a <= s)) || ((c <= r) && (b <= s))) -> true
+        (a <= r) && (b <= s) || (a <= r) && (c <= s) -> true
+        (b <= r) && (a <= s) || (b <= r) && (c <= s) -> true
+        (c <= r) && (a <= s) || (c <= r) && (b <= s) -> true
         else -> false
     }
 }
