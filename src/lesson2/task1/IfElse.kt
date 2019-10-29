@@ -141,8 +141,8 @@ fun rookOrBishopThreatens(
 ): Int {
     return when {
         ((rookX == kingX) || (rookY == kingY)) && (sqr(kingX - bishopX) == sqr(kingY - bishopY)) -> 3
-        rookX == kingX || rookY == kingY -> 1
         ((sqr(kingX - bishopX)) == (sqr(kingY - bishopY))) -> 2
+        rookX == kingX || rookY == kingY -> 1
         else -> 0
     }
 }
