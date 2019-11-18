@@ -3,7 +3,6 @@
 package lesson3.task1
 
 import lesson1.task1.sqr
-import lesson4.task1.abs
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.pow
@@ -115,12 +114,14 @@ fun fib(n: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    var k = 1
-    while (k > 0) {
-        if (k % n == 0 && k % m == 0) break
-        else k++
+    var l = m
+    var s = n
+    val k = l * s
+    while (l != s) {
+        if (l > s) l -= s
+        else s -= l
     }
-    return k
+    return k / l
 }
 
 
@@ -160,11 +161,15 @@ fun maxDivisor(n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    var k = 2
-    while (k > 0 && (k < m || k < n)) {
-        if (m % k != 0 || n % k != 0) k++ else k = -1
+    var a = m
+    var b = n
+    while (a != b) {
+        if (a > b)
+            a -= b
+        else b -= a
     }
-    return k != -1
+    if (a == 1) return true
+    return false
 }
 
 /**
@@ -219,20 +224,10 @@ fun collatzSteps(x: Int): Int {
  */
 fun sin(x: Double, eps: Double): Double {
     var m = 0.0
-    var k: Double
-    var n: Double = x
+    val n = x % (2 * PI)
     var l = 1
-    if (x > 0) {
-        while (n > 2 * PI) {
-            n -= 2 * PI
-        }
-    } else {
-        while (n < 0) {
-            n += 2 * PI
-        }
-    }
     do {
-        k = (n.pow(2 * l - 1) / factorial(2 * l - 1)) * (-1.0).pow(l + 1)
+        val k = (n.pow(2 * l - 1) / factorial(2 * l - 1)) * (-1.0).pow(l + 1)
         m += k
         l++
     } while (abs(k) >= eps)
@@ -280,13 +275,13 @@ fun cos(x: Double, eps: Double): Double {
 fun revert(n: Int): Int {
     var m = digitNumber(n)
     var k = n
-    var result = 0
+    var result = 0.0
     while (k > 0) {
-        result += k % 10 * (10.0.pow(m - 1).toInt())
+        result += k % 10 * (10.0.pow(m - 1))
         k /= 10
         m -= 1
     }
-    return result
+    return result.toInt()
 }
 
 /**
@@ -299,8 +294,8 @@ fun revert(n: Int): Int {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun isPalindrome(n: Int): Boolean {
-    val s = revert(n)
-    return s == n
+    if (revert(n) == n) return true
+    return false
 }
 
 /**
