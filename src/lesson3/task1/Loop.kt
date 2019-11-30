@@ -168,8 +168,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
             a -= b
         else b -= a
     }
-    if (a == 1) return true
-    return false
+    return a == 1
 }
 
 /**
@@ -277,7 +276,7 @@ fun revert(n: Int): Int {
     var k = n
     var result = 0.0
     while (k > 0) {
-        result += k % 10 * (10.0.pow(m - 1))
+        result += k % 10 * (10.0.pow(m - 1).toDouble())
         k /= 10
         m -= 1
     }
@@ -293,10 +292,8 @@ fun revert(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean {
-    if (revert(n) == n) return true
-    return false
-}
+fun isPalindrome(n: Int): Boolean = revert(n) == n
+
 
 /**
  * Средняя
