@@ -251,6 +251,7 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
 fun convert(n: Int, base: Int): List<Int> {
     var m = n
     var q: Int
+    if (m == 0) return mutableListOf1(0)
     val mo = mutableListOf1<Int>()
     if (m < 1) return mutableListOf1(1)
     else {
@@ -260,6 +261,7 @@ fun convert(n: Int, base: Int): List<Int> {
             m /= base
         }
     }
+
     return mo.asReversed()
 }
 
