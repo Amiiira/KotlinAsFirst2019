@@ -276,7 +276,7 @@ fun revert(n: Int): Int {
     var k = n
     var result = 0.0
     while (k > 0) {
-        result += k % 10 * (10.0.pow(m - 1).toDouble())
+        result += k % 10 * (10.0.pow(m - 1))
         k /= 10
         m -= 1
     }
@@ -292,7 +292,7 @@ fun revert(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = revert(n) == n
+fun isPalindrome(n: Int): Boolean = TODO()
 
 
 /**

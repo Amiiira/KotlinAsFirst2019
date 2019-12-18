@@ -6,8 +6,7 @@ import lesson1.task1.discriminant
 import lesson1.task1.sqr
 import kotlin.math.pow
 import kotlin.math.sqrt
-import kotlin.collections.listOf as listOf1
-import kotlin.collections.mutableListOf as mutableListOf1
+
 
 /**
  * Пример
@@ -16,12 +15,12 @@ import kotlin.collections.mutableListOf as mutableListOf1
  */
 fun sqRoots(y: Double) =
     when {
-        y < 0 -> listOf1()
-        y == 0.0 -> listOf1(0.0)
+        y < 0 -> listOf()
+        y == 0.0 -> listOf(0.0)
         else -> {
             val root = sqrt(y)
             // Результат!
-            listOf1(-root, root)
+            listOf(-root, root)
         }
     }
 
@@ -33,11 +32,11 @@ fun sqRoots(y: Double) =
  */
 fun biRoots(a: Double, b: Double, c: Double): List<Double> {
     if (a == 0.0) {
-        return if (b == 0.0) listOf1()
+        return if (b == 0.0) listOf()
         else sqRoots(-c / b)
     }
     val d = discriminant(a, b, c)
-    if (d < 0.0) return listOf1()
+    if (d < 0.0) return listOf()
     if (d == 0.0) return sqRoots(-b / (2 * a))
     val y1 = (-b + sqrt(d)) / (2 * a)
     val y2 = (-b - sqrt(d)) / (2 * a)
@@ -50,7 +49,7 @@ fun biRoots(a: Double, b: Double, c: Double): List<Double> {
  * Выделить в список отрицательные элементы из заданного списка
  */
 fun negativeList(list: List<Int>): List<Int> {
-    val result = mutableListOf1<Int>()
+    val result = mutableListOf<Int>()
     for (element in list) {
         if (element < 0) {
             result.add(element)
@@ -181,11 +180,9 @@ fun times(a: List<Int>, b: List<Int>): Int {
  * Значение пустого многочлена равно 0 при любом x.
  */
 fun polynom(p: List<Int>, x: Int): Int {
-    var t = 0
     var y = 0
-    for (i in p.indices) {
+    for ((t, i) in p.indices.withIndex()) {
         y += (p[i] * (x.toDouble().pow(t.toDouble()))).toInt()
-        t += 1
     }
     return y
 }
@@ -222,12 +219,12 @@ fun accumulate(list: MutableList<Int>): MutableList<Int> {
 fun factorize(n: Int): List<Int> {
     var p = 2
     var m = n
-    val mo = mutableListOf1<Int>()
+    val mo = mutableListOf<Int>()
     while (m > 1) {
         if (m % p == 0) {
             mo.add(p)
             m /= p
-        } else p += 1
+        } else p++
     }
     return mo
 }
@@ -251,9 +248,9 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
 fun convert(n: Int, base: Int): List<Int> {
     var m = n
     var q: Int
-    if (m == 0) return mutableListOf1(0)
-    val mo = mutableListOf1<Int>()
-    if (m < 1) return mutableListOf1(1)
+    if (m == 0) return mutableListOf(0)
+    val mo = mutableListOf<Int>()
+    if (m < 1) return mutableListOf(1)
     else {
         while (m >= 1) {
             q = m % base
@@ -276,7 +273,15 @@ fun convert(n: Int, base: Int): List<Int> {
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
-fun convertToString(n: Int, base: Int): String = TODO()
+fun convertToString(n: Int, base: Int): String {
+    val q = convert(n, base)
+    val k = StringBuilder()
+    for (i in q) {
+        if (i < 10) k.append(i)
+        else k.append((i + ('a' - 10).toInt()).toChar())
+    }
+    return k.toString()
+}
 
 /**
  * Средняя
@@ -287,7 +292,7 @@ fun convertToString(n: Int, base: Int): String = TODO()
  */
 fun decimal(digits: List<Int>, base: Int): Int {
     var k = digits.size - 1
-    var v: Double = 0.0
+    var v = 0.0
     for (i in digits) {
         v += i * (base.toDouble().pow(k))
         k--
@@ -326,4 +331,109 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun russian(n: Int): String {
+    val d = listOf(
+        "ноль",
+        "один",
+        "два",
+        "три",
+        "четыре",
+        "пять",
+        "шесть",
+        "семь",
+        "восемь",
+        "девять"
+    )
+    val q = listOf(
+        "ноль",
+        "десять",
+        "одиннадцать",
+        "двенадцать",
+        "тринадцать",
+        "пятнадцать",
+        "шестнадцать",
+        "семнадцать",
+        "восемнадцать",
+        "девятнадцать"
+    )
+    val m = listOf(
+        "ноль",
+        "ноль",
+        "двадцать",
+        "тридцать",
+        "сорок",
+        "пятьдесят",
+        "шестьдесят",
+        "семьдесят",
+        "восемьдесят",
+        "девяносто"
+    )
+    val k = listOf(
+        "ноль",
+        "сто",
+        "двести",
+        "триста",
+        "четыреста",
+        "пятьсот",
+        "шестьсот",
+        "семьсот",
+        "восемьсот",
+        "девятьсот"
+    )
+    val w = n % 1000
+    val t = n / 1000
+    val result = mutableListOf<String>()
+    if (t / 100 != 0 && t % 100 == 0) result.add(k[t / 100] + " " + "тысяч")
+    if (t % 10 != 0 && t / 100 != 0 && (t / 10) % 10 == 0) {
+        when {
+            t % 10 == 1 -> result.add(k[t / 100] + " " + "одна тысяча")
+            t % 10 == 2 -> result.add(k[t / 100] + " " + "две тысячи")
+            t % 10 == 3 || t % 10 == 4 -> result.add(k[t / 100] + " " + d[t % 10] + " " + "тысячи")
+            else -> result.add(k[t / 100] + " " + d[t % 10] + " " + "тысяч")
+        }
+    }
+    if (t % 10 != 0 && t / 100 == 0 && (t / 10) % 10 == 0) {
+        when {
+            t % 10 == 1 -> result.add("одна тысяча")
+            t % 10 == 2 -> result.add("две тысячи")
+            t % 10 == 3 || t % 10 == 4 -> result.add(d[t % 10] + " " + "тысячи")
+            else -> result.add(d[t % 10] + " " + "тысяч")
+        }
+    }
+    if (t % 10 != 0 && t / 100 != 0 && (t / 10) % 10 != 0) {
+        when {
+            (t / 10) % 10 == 1 -> result.add(k[t / 100] + " " + q[t % 10] + " " + "тысяч")
+            t % 10 == 0 -> result.add(k[t / 100] + " " + m[(t / 10) % 10])
+            t % 10 == 1 -> result.add(k[t / 100] + " " + m[(t / 10) % 10] + " " + "одна тысяча")
+            t % 10 == 2 -> result.add(k[t / 100] + " " + m[(t / 10) % 10] + " " + "две тысячи")
+            t % 10 == 3 || t % 10 == 4 -> result.add(k[t / 100] + " " + m[(t / 10) % 10] + " " + d[t % 10] + " " + "тысячи")
+            else -> result.add(k[t / 100] + " " + m[(t / 10) % 10] + " " + d[t % 10] + " " + "тысяч")
+        }
+    }
+    if (t % 10 != 0 && t / 100 == 0 && (t / 10) % 10 != 0) {
+        when {
+            (t / 10) % 10 == 1 -> result.add(q[t % 10] + " " + "тысяч")
+            t % 10 == 0 -> result.add(m[(t / 10) % 10])
+            t % 10 == 1 -> result.add(m[(t / 10) % 10] + " " + "одна тысяча")
+            t % 10 == 2 -> result.add(m[(t / 10) % 10] + " " + "две тысячи")
+            t % 10 == 3 || t % 10 == 4 -> result.add(m[(t / 10) % 10] + " " + d[t % 10] + " " + "тысячи")
+            else -> result.add(m[(t / 10) % 10] + " " + d[t % 10] + " " + "тысяч")
+        }
+    }
+    if (w % 100 == 0 && w / 100 != 0) result.add(k[w / 100])
+    if (w % 100 != 0 && w / 100 != 0) {
+        when {
+            (w / 10) % 10 == 1 -> result.add(k[w / 100] + " " + q[w % 10])
+            (w / 10) % 10 == 0 && w % 10 != 0 -> result.add(k[w / 100] + " " + d[w % 10])
+            (w / 10) % 10 > 1 && w % 10 != 0 -> result.add(k[w / 100] + " " + m[(w / 10) % 10] + " " + d[w % 10])
+        }
+    }
+    if (w % 100 != 0 && w / 100 == 0) {
+        when {
+            (w / 10) % 10 == 1 -> result.add(q[(w % 10) + 1])
+            (w / 10) % 10 == 0 && w % 10 != 0 -> result.add(d[w % 10])
+            (w / 10) % 10 > 1 && w % 10 != 0 -> result.add(m[(w / 10) % 10] + " " + d[w % 10])
+        }
+    }
+    return result.joinToString(separator = " ")
+}
