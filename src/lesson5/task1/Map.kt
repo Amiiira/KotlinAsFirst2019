@@ -110,6 +110,7 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
 fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
     for ((i) in a) {
         if (a[i] == b[i]) return true
+        if (a.isEmpty() && b.isEmpty()) return true
     }
     return false
 }
@@ -147,8 +148,9 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
     val w = mutableListOf<String>()
     for (i in a) {
         if (b.contains(i)) w.add(i)
+
     }
-    return w
+    return w.distinct()
 }
 
 /**
