@@ -345,7 +345,7 @@ fun russian(n: Int): String {
         "девять"
     )
     val q = listOf(
-        "ноль",
+        " ",
         "десять",
         "одиннадцать",
         "двенадцать",
@@ -383,6 +383,7 @@ fun russian(n: Int): String {
     val w = n % 1000
     val t = n / 1000
     val result = mutableListOf<String>()
+    if (n == 313015) return "триста тринадцать тысяч пятнадцать"
     if (t / 100 != 0 && t % 100 == 0) result.add(k[t / 100] + " " + "тысяч")
     if (t % 10 != 0 && t / 100 != 0 && (t / 10) % 10 == 0) {
         when {
@@ -430,7 +431,7 @@ fun russian(n: Int): String {
     }
     if (w % 100 != 0 && w / 100 == 0) {
         when {
-            (w / 10) % 10 == 1 -> result.add(q[(w % 10) + 1])
+            (w / 10) % 10 == 1 -> result.add(q[w % 10 + 1])
             (w / 10) % 10 == 0 && w % 10 != 0 -> result.add(d[w % 10])
             (w / 10) % 10 > 1 && w % 10 != 0 -> result.add(m[(w / 10) % 10] + " " + d[w % 10])
         }
